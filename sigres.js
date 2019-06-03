@@ -46,14 +46,9 @@ const Tree = (x, y, size, parent) => {
   const it = {x, y, size, sigs, quads, split, parent}
   it[Symbol.iterator] = function * () {
     yield it // root
-    for (const subroot of quads) {
-      // quads is an array and has its own iterable definition...
-      yield subroot
-      for (const subtree of subroot) {
-        // ... so we have to explicitly iterate one level deeper
-        // to trigger a recursive call of our custom iterable
-        yield subtree
-      }
+    for (const subtree of quads) {
+      // iterate over each subtree and yield its results
+      yield * subtree
     }
   }
 
