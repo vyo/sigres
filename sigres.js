@@ -56,22 +56,10 @@ export const Tree = (x, y, size, parent) => {
   return it
 }
 
-export const linearNorm = (a, b = {x: 0, y: 0}, x = 2) => {
-  const norm = Math.pow((a.x - b.x) ** x + (a.y - b.y) ** x, 1 / x)
-  // console.log('norm: ', a, b, norm)
-  // console.log(`norm: ${norm}`)
-  return norm
-}
-export const unitRadius = (a, x = 2) => {
-  // console.log(`radius: ${a}`)
-  return a
-}
+export const linearNorm = (a, b = {x: 0, y: 0}, x = 2) => Math.pow((a.x - b.x) ** x + (a.y - b.y) ** x, 1 / x)
+// export const unitRadius = (a, x = 2) => a
 
-export const covers = (a, b) => {
-  const margin = unitRadius(a.size) - unitRadius(b.size) - linearNorm(a, b)
-  // console.log(`inner margin: ${margin}`)
-  return margin >= 0
-}
+export const covers = (a, b) => a.size - b.size - linearNorm(a, b) >= 0
 
 export const constrains = (quad, node) => {
   const contained = {
@@ -138,6 +126,6 @@ export const createPrefix = (sig, node = Root(256), prefix = []) => {
 }
 export const resolvePrefix = (index, prefix) => [...prefix].reduce((node, value) => down(node, value), index)
 
-export const dimension = tree => [...tree].reduce((acc, cur) => acc + cur.quads.length, 0)
+export const cells = tree => [...tree].reduce((acc, cur) => acc + cur.quads.length, 0)
 
-export const capacity = tree => [...tree].reduce((acc, cur) => acc + cur.sigs.length, 0)
+export const elements = tree => [...tree].reduce((acc, cur) => acc + cur.sigs.length, 0)
